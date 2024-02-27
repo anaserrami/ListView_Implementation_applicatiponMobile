@@ -11,27 +11,32 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ma.enset.app.adapters.MyAdapter;
+import ma.enset.app.models.MyModel;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button buttonAdd = findViewById(R.id.buttonAdd);
-        EditText editTextName = findViewById(R.id.editTextName);
-        EditText editTextEmail = findViewById(R.id.editTextEmail);
-        ListView listView = findViewById(R.id.listView);
-        List<String> listData = new ArrayList<>();
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listData);
+
+        Button buttonAdd=findViewById(R.id.buttonAdd);
+
+        EditText textViewName=findViewById(R.id.editTextName);
+        EditText textViewEmail=findViewById(R.id.editTextEmail);
+        ListView listView=findViewById(R.id.listView);
+
+        List<MyModel> myModels =new ArrayList<MyModel>();
+        ArrayAdapter adapter=new MyAdapter(this, android.R.layout.simple_list_item_1,myModels);
         listView.setAdapter(adapter);
-        buttonAdd.setOnClickListener((view ->{
-            String name = editTextName.getText().toString();
-            String email = editTextEmail.getText().toString();
-            listData.add("Name : " + name + "\n"+
-                            "Email : " + email);
+
+        buttonAdd.setOnClickListener(view -> {
+            String title =textViewName.getText().toString();
+            String content =textViewEmail.getText().toString();
+            MyModel myModel =new MyModel(title,content);
+            adapter.add(myModel);
             adapter.notifyDataSetChanged();
-            editTextName.getText().clear();
-            editTextEmail.getText().clear();
-        }));
+        });
     }
 }
